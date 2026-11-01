@@ -13,16 +13,40 @@
   "build": {
     "appId": "local.chris.scanruler",
     "productName": "ScanRuler",
-    "directories": { "output": "release" },
-    "files": ["main.cjs", "staticServer.cjs", "icon.png", "app/**/*"],
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.cjs",
+      "staticServer.cjs",
+      "icon.png",
+      "app/**/*"
+    ],
     "win": {
       "icon": "icon.png",
       "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true },
-    "artifactName": "ScanRuler-${version}-${arch}-${target}.${ext}"
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "artifactName": "ScanRuler-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "ScanRuler-Portable-${version}.${ext}"
+    }
   }
 }
