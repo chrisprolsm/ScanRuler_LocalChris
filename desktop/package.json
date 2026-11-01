@@ -1,0 +1,28 @@
+{
+  "name": "scanruler-desktop",
+  "version": "0.9.2",
+  "description": "ScanRuler as a Windows desktop app (local copy of the web app)",
+  "author": "Chris (local build of CNC Kitchen's ScanRuler, AGPL-3.0)",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "main": "main.cjs",
+  "devDependencies": {
+    "electron": "^44.9.3",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "local.chris.scanruler",
+    "productName": "ScanRuler",
+    "directories": { "output": "release" },
+    "files": ["main.cjs", "staticServer.cjs", "icon.png", "app/**/*"],
+    "win": {
+      "icon": "icon.png",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true },
+    "artifactName": "ScanRuler-${version}-${arch}-${target}.${ext}"
+  }
+}

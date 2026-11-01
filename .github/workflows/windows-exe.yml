@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Builds ScanRuler as a Windows program (installer + portable .exe) and
+# publishes it as a GitHub Release. Run it by hand: Actions -> "Windows exe"
+# -> Run workflow.
+name: Windows exe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Build the web app
+        run: |
+          npm ci
+          npm run build
+      - name: Package the desktop app
+        shell: bash
+        run: |
+          cd desktop
+          cp -r ../dist app
+          npm install --no-audit --no-fund
+          npx electron-builder --win --publish never
+          ls -la release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ScanRuler-windows
+          path: |
+            desktop/release/*.exe
+      - name: Publish release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "desktop-run-${{ github.run_number }}" desktop/release/*.exe \
+            --title "ScanRuler for Windows (build ${{ github.run_number }})" \
+            --notes "Installer (nsis) and portable .exe. Unsigned: Windows SmartScreen will warn once; choose More info > Run anyway."
